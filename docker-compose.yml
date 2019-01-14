@@ -1,0 +1,30 @@
+version: '3'
+services:
+  jupyter-tutorial:
+    build: .
+    container_name: mission10.jupyter
+    user: root
+    environment:
+      - GRANT_SUDO=yes
+    ports:
+      - "8888:8888"
+      - "5000:5000"
+    volumes:
+      - ./note/:/home/jovyan/work/
+    command: start-notebook.sh --NotebookApp.token=''
+
+  db:
+    image: mysql
+    container_name: mission10.cc104.mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: hahaha
+    volumes:
+      - ./data/:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8787:8787
